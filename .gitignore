@@ -1,0 +1,7 @@
+.idea
+target
+*.iml
+data2
+output
+testoutput
+testoutput2
