@@ -1,15 +1,19 @@
 package com.thecrunchycorner.calendar.domain;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 public class Appointment {
     private UUID id;
     private Customer customer;
     private Consultant consultant;
-    private LocalDateTime start;
+    private LocalDate startDate;
+    private LocalTime startTime;
     private Duration duration;
+    private String complaint;
 
     public UUID getId() {
         return id;
@@ -23,11 +27,19 @@ public class Appointment {
         return consultant;
     }
 
-    public LocalDateTime getStart() {
-        return start;
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
     public Duration getDuration() {
         return duration;
+    }
+
+    public String getComplaint() {
+        return complaint;
     }
 }

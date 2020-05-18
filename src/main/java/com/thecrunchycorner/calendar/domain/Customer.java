@@ -8,7 +8,6 @@ public class Customer {
     private String name;
     private LocalDate dob;
     private String tel;
-    private String address;
 
     public UUID getId() {
         return id;
@@ -24,9 +23,5 @@ public class Customer {
 
     public String getTel() {
         return tel;
-    }
-
-    public String getAddress() {
-        return address;
     }
 }
