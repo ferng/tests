@@ -1,15 +1,14 @@
 package com.thecrunchycorner.calendar.domain;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 public class Customer {
-    private UUID id;
+    private long id;
     private String name;
     private LocalDate dob;
     private String tel;
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 

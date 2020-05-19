@@ -1,13 +1,11 @@
 package com.thecrunchycorner.calendar.domain;
 
-import java.util.UUID;
-
 public class Slot {
-    private UUID id;
+    private long id;
     private Appointment appointmentId;
     private SlotStatus status;
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 

@@ -1,12 +1,24 @@
 package com.thecrunchycorner.calendar.domain;
 
-import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(schema = "public", name = "SCHEDULE")
 public class Consultant {
-    private UUID id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name= "ID", updatable = false, nullable = false)
+    private long id;
+
     private String name;
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 

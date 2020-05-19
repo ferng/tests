@@ -3,10 +3,9 @@ package com.thecrunchycorner.calendar.domain;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.UUID;
 
 public class Appointment {
-    private UUID id;
+    private long id;
     private Customer customer;
     private Consultant consultant;
     private LocalDate startDate;
@@ -14,7 +13,7 @@ public class Appointment {
     private Duration duration;
     private String complaint;
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
