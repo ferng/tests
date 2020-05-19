@@ -16,11 +16,8 @@ class DateCalculatorNextWorkingDaySpec extends Specification{
 
 
     def test() {
-        given:
-        def calculator = new DateCalculator()
-
         when:
-        def actualNextWorkingDay = calculator.nextWorkingDay(day)
+        def actualNextWorkingDay = DateCalculator.nextWorkingDay(day)
 
         then:
         actualNextWorkingDay == expected
@@ -34,9 +31,5 @@ class DateCalculatorNextWorkingDaySpec extends Specification{
         FRIDAY      | NEXT_MONDAY
         SATURDAY    | NEXT_MONDAY
         SUNDAY      | NEXT_MONDAY
-
-
-
-
     }
 }
