@@ -1,14 +1,18 @@
 package com.thecrunchycorner.calendar.services
 
+import com.thecrunchycorner.calendar.domain.Schedule
 import spock.lang.Specification
 
 import java.time.DayOfWeek
+import java.time.LocalTime
 
 class SlotGeneratorWeekStartingTodaySpec extends Specification {
     def test() {
         given:
+        def schedule = new Schedule(1, LocalTime.of(9,0), LocalTime.of(12,30), LocalTime.of(13,
+                30), LocalTime.of(16, 30), 15);
         def generator = new SlotGenerator();
-        def slots = generator.getSlots();
+        def slots = generator.getSlots(schedule);
         def firstDay = slots.get(0).getDay()
         def secondDay = slots.get(1).getDay()
         def thirdDay = slots.get(2).getDay()

@@ -1,27 +1,33 @@
 package com.thecrunchycorner.calendar.services
 
+import com.thecrunchycorner.calendar.domain.Schedule
 import spock.lang.Specification
 
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalTime
 
 class SlotGeneratorStartingAnyDayAnyLengthSpec extends Specification {
     def test() {
         given:
+        def schedule = new Schedule(1, LocalTime.of(9,0), LocalTime.of(12,30), LocalTime.of(13,
+                30), LocalTime.of(16, 30), 15);
         def generator = new SlotGenerator();
-        def slots = generator.getSlots(LocalDate.of(2020, 5, 18), LocalDate.of(2020, 6, 1));
+
+        def slots = generator.getSlots(LocalDate.of(2020, 5, 18), LocalDate.of(2020, 6, 1), schedule);
         def firstDay = slots.get(0).getDay()
         def secondDay = slots.get(1).getDay()
         def thirdDay = slots.get(2).getDay()
         def fourthDay = slots.get(3).getDay()
         def fifthDay = slots.get(4).getDay()
-
-        when:
         def expectedFirst
         def expectedSecond
         def expectedThird
         def expectedFourth
         def expectedFifth
+
+        when:
+
         if (firstDay.getDayOfWeek() == today) {
             expectedFirst = firstDay.plusDays(todayOffset)
             expectedSecond = firstDay.plusDays(tomorrow)

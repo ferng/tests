@@ -19,9 +19,9 @@
 * There are two daily periods: morning and afternoon, both provide slots of 15 minutes.
 * The data is retrieved by a simple service, however this service could be changed to access
  another microservice accessing a more complex scheduling system for example which could be used
- by the dentist to specify their own schedule in that case only the ScheduleClient service would
-  have to be updated along with possibly some json annotations. No business logic or workflow
-   would be affected, purely the interface to the backend system.
+ by the dentist to specify their own schedule in that case only the ScheduleClient service and
+  the SlotGenerator would have to be updated along with possibly some json annotations. No
+   business logic or workflow would be affected, purely the interface to the backend system.
  
  
 ## Testing

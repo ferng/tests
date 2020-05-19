@@ -22,7 +22,20 @@ public class Schedule {
     private LocalTime end1;
     private LocalTime start2;
     private LocalTime end2;
-    private int slotDuration;
+    private long slotDuration;
+
+    public Schedule() {
+    }
+
+    public Schedule(long consultantId, LocalTime start1, LocalTime end1, LocalTime start2,
+                    LocalTime end2, long slotDuration) {
+        this.consultantId = consultantId;
+        this.start1 = start1;
+        this.end1 = end1;
+        this.start2 = start2;
+        this.end2 = end2;
+        this.slotDuration = slotDuration;
+    }
 
     public long getId() {
         return id;
@@ -48,7 +61,7 @@ public class Schedule {
         return end2;
     }
 
-    public int getSlotDuration() {
+    public long getSlotDuration() {
         return slotDuration;
     }
 }
