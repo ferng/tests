@@ -25,6 +25,9 @@ public class Appointment {
     private LocalTime appEnd;
     private String complaint;
 
+
+
+
     public long getId() {
         return id;
     }

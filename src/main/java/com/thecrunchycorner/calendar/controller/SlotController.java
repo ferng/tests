@@ -3,6 +3,7 @@ package com.thecrunchycorner.calendar.controller;
 import com.thecrunchycorner.calendar.domain.Appointment;
 import com.thecrunchycorner.calendar.domain.DailySlots;
 import com.thecrunchycorner.calendar.domain.Schedule;
+import com.thecrunchycorner.calendar.services.SlotEnricher;
 import com.thecrunchycorner.calendar.services.SlotGenerator;
 import com.thecrunchycorner.calendar.services.backend.AppointmentService;
 import com.thecrunchycorner.calendar.services.backend.ScheduleService;
@@ -30,6 +31,9 @@ public class SlotController {
     @Autowired
     private SlotGenerator generator;
 
+    @Autowired
+    private SlotEnricher enricher;
+
     @GetMapping(value = "/")
     public List<DailySlots> getSlots(@RequestParam(defaultValue = "1") String consultantId,
                                      @RequestParam(defaultValue = "1970-01-01") String rangeStart,
@@ -41,19 +45,19 @@ public class SlotController {
         Schedule schedule =  scheduleService.loadSchedule(consId);
         List<DailySlots> slots = generator.getSlots(schedule);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-
         LocalDate start;
         LocalDate end;
         if (rangeStart.equals("1970-01-01") && rangeEnd.equals("1970-01-01")) {
             start = LocalDate.now().plusDays(1);
             end = start.plusDays(6);
         } else {
-            start = LocalDate.parse(rangeStart, formatter);
-            end = LocalDate.parse(rangeEnd, formatter);
+            start = LocalDate.parse(rangeStart, DateTimeFormatter.ISO_LOCAL_DATE);
+            end = LocalDate.parse(rangeEnd, DateTimeFormatter.ISO_LOCAL_DATE);
         }
 
         List<Appointment> appointments = apptService.loadAppointments(consId, start, end);
+
+        enricher.populateSlots(slots, appointments);
 
         return slots;
     }

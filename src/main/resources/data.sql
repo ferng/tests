@@ -80,7 +80,7 @@ REFERENCES PUBLIC.consultants(id);
 
 INSERT INTO appointments (consultant_id, customer_id, app_date, app_start, app_end, complaint) VALUES
     (1, 1, DATEADD('DAY', 1, CURRENT_DATE), '10:30', '10:45', 'wobbly tooth'),
-    (1, 2, DATEADD('DAY', 1, CURRENT_DATE), '11:15', '11:35', 'check up'),
+    (1, 2, DATEADD('DAY', 1, CURRENT_DATE), '11:15', '11:30', 'check up'),
     (1, 3, DATEADD('DAY', 1, CURRENT_DATE), '13:30', '14:30', 'root canal');
 
 

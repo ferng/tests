@@ -1,5 +1,6 @@
 package com.thecrunchycorner.calendar.services;
 
+import com.thecrunchycorner.calendar.domain.Appointment;
 import com.thecrunchycorner.calendar.domain.DailySlots;
 import com.thecrunchycorner.calendar.domain.Schedule;
 import com.thecrunchycorner.calendar.domain.Slot;
@@ -18,17 +19,18 @@ public class SlotGenerator {
         return getSlots(LocalDate.now(), schedule);
     }
 
-    public ArrayList<DailySlots> getSlots(LocalDate slotStartDay, Schedule schedule) {
-        return getSlots(slotStartDay, slotStartDay.plusDays(7L), schedule);
+    public ArrayList<DailySlots> getSlots(LocalDate startDay, Schedule schedule) {
+        return getSlots(startDay, startDay.plusDays(7L), schedule);
     }
 
-    public ArrayList<DailySlots> getSlots(LocalDate slotStartDay, LocalDate slotEndDay, Schedule schedule) {
+
+    public ArrayList<DailySlots> getSlots(LocalDate startDay, LocalDate endDay, Schedule schedule) {
         ArrayList<DailySlots> weekSlots = new ArrayList<>();
-        long numOfDays = ChronoUnit.DAYS.between(slotStartDay, slotEndDay);
+        long numOfDays = ChronoUnit.DAYS.between(startDay, endDay);
         LocalDate slotDay;
 
         for (long i = 0; i < numOfDays; i++) {
-            slotDay = slotStartDay.plusDays(i);
+            slotDay = startDay.plusDays(i);
             if (slotDay.getDayOfWeek() != DayOfWeek.SATURDAY && slotDay.getDayOfWeek() != DayOfWeek.SUNDAY) {
                 ArrayList<Slot> slots = getDailySlots(schedule);
                 weekSlots.add(new DailySlots(slotDay, slots));
