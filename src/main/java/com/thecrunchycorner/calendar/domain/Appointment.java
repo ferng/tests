@@ -1,40 +1,52 @@
 package com.thecrunchycorner.calendar.domain;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(schema = "public", name = "APPOINTMENTS")
 public class Appointment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name= "ID", updatable = false, nullable = false)
     private long id;
-    private Customer customer;
-    private Consultant consultant;
-    private LocalDate startDate;
-    private LocalTime startTime;
-    private Duration duration;
+
+    private long customerId;
+    private long consultantId;
+    private LocalDate appDate;
+    private LocalTime appStart;
+    private LocalTime appEnd;
     private String complaint;
 
     public long getId() {
         return id;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public long getCustomerId() {
+        return customerId;
     }
 
-    public Consultant getConsultant() {
-        return consultant;
+    public long getConsultantId() {
+        return consultantId;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public LocalDate getAppDate() {
+        return appDate;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
+    public LocalTime getAppStart() {
+        return appStart;
     }
 
-    public Duration getDuration() {
-        return duration;
+    public LocalTime getAppEnd() {
+        return appEnd;
     }
 
     public String getComplaint() {
