@@ -4,7 +4,7 @@ import spock.lang.Specification
 
 import java.time.DayOfWeek
 
-class SlotGeneratorWeekStaringTodaySpec extends Specification {
+class SlotGeneratorWeekStartingTodaySpec extends Specification {
     def test() {
         given:
         def generator = new SlotGenerator();
