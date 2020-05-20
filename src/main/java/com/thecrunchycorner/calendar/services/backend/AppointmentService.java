@@ -11,6 +11,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class AppointmentService {
@@ -36,8 +37,14 @@ public class AppointmentService {
                 , end);
     }
 
+    @Transactional
     public Appointment saveAppointment(Appointment appointment) {
         repository.save(appointment);
         return appointment;
+    }
+
+    @Transactional
+    public Long deleteAppointment(long id) {
+        return repository.removeById(id);
     }
 }
