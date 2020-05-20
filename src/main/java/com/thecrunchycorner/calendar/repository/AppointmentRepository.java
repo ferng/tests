@@ -14,4 +14,6 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Strin
 
     Appointment findByConsultantIdAndAppDateAndAppStartBetween(long consultantId, LocalDate date,
                                                                LocalTime start, LocalTime end);
+
+
 }

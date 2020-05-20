@@ -8,13 +8,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 @Entity
 @Table(schema = "public", name = "APPOINTMENTS")
+@TableGenerator(name="db", initialValue=100, allocationSize=50)
 public class Appointment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "db")
     @Column(name= "ID", updatable = false, nullable = false)
     private long id;
 

@@ -10,13 +10,16 @@
 * Some calls to backend services have been simulated if another service carrying out an identical
  process for different data already exists for the purpose of this exercise. See `ScheduleService.loadSchedule`
   and `ScheduleService.loadSlotSizes`.
+* Additional rest services could be added to provide available services based on user / role post
+ logon with a rest call providing end points for each service, eg. view diary URI, make appointments
+  URI, etc. 
 
 ## Design assumptions
 ### User
 * Front end assumes 'Dr. John' is logged in. This could fairly easily be changed by adding
  credential based log in which would present the user's own diary.
  * Furthermore, diary's could be shared by adding role based access; eg. view diary, update diary
- , delete entry. 
+ , delete entry.
 ### Dentist schedule
 * The dentist's schedule is currently held in the database.
 * There are two daily periods: morning and afternoon, both provide slots of 15 minutes.
@@ -46,10 +49,35 @@ http://localhost:8080/h2-console/
 
 #### Testing the backend
 * Retrieve data for this week
-http://localhost:8080/diary/slots
+http://localhost:8080/diary/slots/1
 * Retrieve data for a consultant for a date range
-http://localhost:8080/diary/slots?consultantId=1&rangeStart=2020-05-20&rangeEnd=2020-05-21
-* Or the default which is a full working week
-http://localhost:8080/diary/slots?consultantId=1
+http://localhost:8080/diary/slots/1?rangeStart=2020-05-20&rangeEnd=2020-05-21
 * Check an individual slot
-http://localhost:8080/diary/slot?date=2020-05-20&time=13:45
+http://localhost:8080/diary/slot/1?date=2020-05-21&appStart=14:30&appEnd=14:45
+* Create a new appointment
+http://localhost:8080/diary/appointment
+with payload
+```
+{
+  "customerId": 2,
+  "consultantId": 1,
+  "appDate": "2020-05-20",
+  "appStart": "11:15:00",
+  "appEnd": "12:15:00",
+  "complaint": "I said wobbly tooth!!"
+}
+```
+* Attempt to create a new appointment when one already exists
+http://localhost:8080/diary/appointment
+with payload
+```
+{
+  "customerId": 2,
+  "consultantId": 1,
+  "appDate": "2020-05-21",
+  "appStart": "11:15:00",
+  "appEnd": "12:15:00",
+  "complaint": "I said wobbly tooth!!"
+}
+```
+dsadjhuh

@@ -28,13 +28,16 @@ public class AppointmentService {
         return repository.findByConsultantIdAndAppDateBetween(consultantId, start, end).orElse(new ArrayList<>());
     }
 
-    public Appointment CheckSlot(long consultantId, LocalDate date, LocalTime start,
+    public Appointment checkSlot(long consultantId, LocalDate date, LocalTime start,
                                  LocalTime end) {
         LOGGER.debug("Checking slot status for consultant{}", consultantId);
 
         return repository.findByConsultantIdAndAppDateAndAppStartBetween(consultantId, date, start
                 , end);
+    }
 
-
+    public Appointment saveAppointment(Appointment appointment) {
+        repository.save(appointment);
+        return appointment;
     }
 }
