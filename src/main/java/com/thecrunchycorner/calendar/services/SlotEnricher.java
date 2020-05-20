@@ -4,6 +4,7 @@ import com.thecrunchycorner.calendar.domain.Appointment;
 import com.thecrunchycorner.calendar.domain.DailySlots;
 import com.thecrunchycorner.calendar.domain.Slot;
 import com.thecrunchycorner.calendar.domain.SlotStatus;
+import com.thecrunchycorner.calendar.helpers.SlotCalculator;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -22,7 +23,7 @@ public class SlotEnricher {
             if (dailyAppointments.size() > 0) {
                 dailyAppointments.forEach((appt -> {
                     dailySlots.getSlots().forEach((slot -> {
-                        if (slotInAppt(slot, appt)) {
+                        if (SlotCalculator.slotInAppt(slot, appt)) {
                             slot.setAppointment(appt);
                             slot.setStatus(SlotStatus.BOOKED);
                         }
@@ -33,13 +34,7 @@ public class SlotEnricher {
 
     }
 
-    private boolean slotInAppt(Slot slot, Appointment appt) {
-        LocalTime slotStart = slot.getStart();
-        LocalTime apptStart = appt.getAppStart();
-        LocalTime apptEnd = appt.getAppEnd();
 
-        return (slotStart.equals(apptStart) || slotStart.isAfter(apptStart)) && slotStart.isBefore(apptEnd);
-    }
 
     private List<Appointment> getDailyAppointments(LocalDate slotDay,
                                                    List<Appointment> appointments) {

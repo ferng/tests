@@ -7,6 +7,9 @@
  to maintain an appointment diary.
 * Other services such as insurance and billing could be added by extending this application.
 * My groovy code looks like Java (as can be seen in the spock unit tests).
+* Some calls to backend services have been simulated if another service carrying out an identical
+ process for different data already exists for the purpose of this exercise. See `ScheduleService.loadSchedule`
+  and `ScheduleService.loadSlotSizes`.
 
 ## Design assumptions
 ### User
@@ -40,3 +43,13 @@ http://localhost:8080/h2-console/
 |JDBC URL|jdbc:h2:mem:diary|
 |User Name|sa|
 |Password|password|
+
+#### Testing the backend
+* Retrieve data for this week
+http://localhost:8080/diary/slots
+* Retrieve data for a consultant for a date range
+http://localhost:8080/diary/slots?consultantId=1&rangeStart=2020-05-20&rangeEnd=2020-05-21
+* Or the default which is a full working week
+http://localhost:8080/diary/slots?consultantId=1
+* Check an individual slot
+http://localhost:8080/diary/slot?date=2020-05-20&time=13:45

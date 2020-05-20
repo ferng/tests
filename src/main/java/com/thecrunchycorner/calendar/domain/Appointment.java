@@ -25,8 +25,15 @@ public class Appointment {
     private LocalTime appEnd;
     private String complaint;
 
+    public Appointment() {
+    }
 
-
+    public Appointment(long consultantId, LocalDate appDate, LocalTime appStart, LocalTime appEnd) {
+        this.consultantId = consultantId;
+        this.appDate = appDate;
+        this.appStart = appStart;
+        this.appEnd = appEnd;
+    }
 
     public long getId() {
         return id;

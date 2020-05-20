@@ -3,15 +3,21 @@ package com.thecrunchycorner.calendar.controller;
 import com.thecrunchycorner.calendar.domain.Appointment;
 import com.thecrunchycorner.calendar.domain.DailySlots;
 import com.thecrunchycorner.calendar.domain.Schedule;
+import com.thecrunchycorner.calendar.domain.Slot;
+import com.thecrunchycorner.calendar.domain.SlotStatus;
+import com.thecrunchycorner.calendar.helpers.SlotCalculator;
 import com.thecrunchycorner.calendar.services.SlotEnricher;
 import com.thecrunchycorner.calendar.services.SlotGenerator;
 import com.thecrunchycorner.calendar.services.backend.AppointmentService;
 import com.thecrunchycorner.calendar.services.backend.ScheduleService;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.plaf.nimbus.AbstractRegionPainter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/slots")
+@RequestMapping("/diary")
 public class SlotController {
 
     @Autowired
@@ -34,31 +40,89 @@ public class SlotController {
     @Autowired
     private SlotEnricher enricher;
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "/slot")
+    public Slot checkSlot(@RequestParam(defaultValue = "1") String consultantId,
+                                     @RequestParam(defaultValue = "1970-01-01") String date,
+                                     @RequestParam(defaultValue = "09:00") String appStart,
+                                     @RequestParam(defaultValue = "09:15") String appEnd,
+                                     HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_OK);
+
+        long parsedConsultantId = Long.parseLong(consultantId);
+        LocalDate parsedDate;
+        LocalTime start;
+        LocalTime end;
+        if (date.equals("1970-01-01") && appStart.equals("09:00")) {
+            parsedDate = LocalDate.now();
+            start = LocalTime.now();
+            end = LocalTime.now().plusMinutes(15);
+        } else {
+            parsedDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+            start = LocalTime.parse(appStart, DateTimeFormatter.ISO_TIME);
+            end = LocalTime.parse(appEnd, DateTimeFormatter.ISO_TIME);
+        }
+
+        List<DailySlots> daily = loadSlots(parsedConsultantId, parsedDate,
+                parsedDate.plusDays(1));
+        ArrayList<Slot> slots =
+                loadSlots(parsedConsultantId, parsedDate, parsedDate.plusDays(1)).get(0).getSlots();
+
+        Appointment proposed = new Appointment(parsedConsultantId, parsedDate, start, end);
+        Slot slotResponse = new Slot(start, end, SlotStatus.FREE);
+
+        for (Slot slot : slots) {
+            if (SlotCalculator.slotAlreadyBooked(slot, proposed)) {
+                slotResponse.setStatus(SlotStatus.BOOKED);
+                break;
+            }
+        }
+
+        return slotResponse;
+    }
+
+    private Appointment getAppointmentInWindow(long parsedConsultantId, LocalDate parsedDate,
+                                               LocalTime parsedStart) {
+        // to check all slots an appointment could spread through
+        int apptWindow = scheduleService.getLargestSlot(parsedConsultantId)
+                - scheduleService.getSmallestSlot(parsedConsultantId);
+        return apptService.CheckSlot(parsedConsultantId, parsedDate,
+                parsedStart.minusMinutes(apptWindow), parsedStart);
+    }
+
+    @GetMapping(value = "/slots")
     public List<DailySlots> getSlots(@RequestParam(defaultValue = "1") String consultantId,
                                      @RequestParam(defaultValue = "1970-01-01") String rangeStart,
                                      @RequestParam(defaultValue = "1970-01-01") String rangeEnd,
                                      HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_OK);
 
-        long consId = Long.parseLong(consultantId);
-        Schedule schedule =  scheduleService.loadSchedule(consId);
-        List<DailySlots> slots = generator.getSlots(schedule);
+        long parsedConsultantId = Long.parseLong(consultantId);
 
         LocalDate start;
         LocalDate end;
         if (rangeStart.equals("1970-01-01") && rangeEnd.equals("1970-01-01")) {
-            start = LocalDate.now().plusDays(1);
+            start = LocalDate.now();
             end = start.plusDays(6);
         } else {
             start = LocalDate.parse(rangeStart, DateTimeFormatter.ISO_LOCAL_DATE);
-            end = LocalDate.parse(rangeEnd, DateTimeFormatter.ISO_LOCAL_DATE);
+            end = LocalDate.parse(rangeEnd, DateTimeFormatter.ISO_LOCAL_DATE).plusDays(1);
         }
 
-        List<Appointment> appointments = apptService.loadAppointments(consId, start, end);
+        List<DailySlots> slots = loadSlots(parsedConsultantId, start, end);
+
+        return slots;
+    }
+
+
+
+    private List<DailySlots> loadSlots(long parsedConsultantId, LocalDate start, LocalDate end) {
+        Schedule schedule =  scheduleService.loadSchedule(parsedConsultantId);
+        List<DailySlots> slots = generator.getSlots(start, end, schedule);
+
+        List<Appointment> appointments = apptService.loadAppointments(parsedConsultantId, start,
+                end);
 
         enricher.populateSlots(slots, appointments);
-
         return slots;
     }
 }
