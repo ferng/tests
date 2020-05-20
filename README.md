@@ -54,6 +54,21 @@ http://localhost:8080/h2-console/
 |User Name|sa|
 |Password|password|
 
+#### Testing scripts
+Included in src/test/scripts
+You will have to update the dates in the script as they will go out of range dependant on when you
+ run them
+* Retrieve data for this week
+getWeeklySlots.sh
+* Retrieve data for a consultant for a date range
+getDateRangeSlots.sh
+* Check an individual slot
+checkSingleSlot.sh
+* Create a new appointment
+makeAppointment.sh
+* Delete an appointment
+deleteAppointment.sh
+
 #### Testing the backend
 * Retrieve data for this week (using GET)
 http://localhost:8080/diary/slots/1
