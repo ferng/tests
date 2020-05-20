@@ -1,5 +1,7 @@
 package com.thecrunchycorner.calendar.controller;
 
+import static java.time.temporal.ChronoUnit.MINUTES;
+
 import com.thecrunchycorner.calendar.domain.Appointment;
 import com.thecrunchycorner.calendar.domain.DailySlots;
 import com.thecrunchycorner.calendar.domain.Schedule;
@@ -94,8 +96,6 @@ public class SlotController {
 
     private Slot checkSlot(long parsedConsultantId, LocalDate parsedDate, LocalTime start,
                            LocalTime end) {
-        List<DailySlots> daily = loadSlots(parsedConsultantId, parsedDate,
-                parsedDate.plusDays(1));
         ArrayList<Slot> slots =
                 loadSlots(parsedConsultantId, parsedDate, parsedDate.plusDays(1)).get(0).getSlots();
 
@@ -115,19 +115,33 @@ public class SlotController {
     public Slot addAppointment(@RequestBody Appointment appointment,
                                HttpServletResponse response) {
 
-        Slot existingSlot = checkSlot(appointment.getConsultantId(), appointment.getAppDate(),
-                appointment.getAppStart(), appointment.getAppEnd());
+        long requestedApptSize = appointment.getAppStart().until(appointment.getAppEnd(), MINUTES);
+        List<Integer> availableSlotSizes = scheduleService.loadSlotSizes(appointment.getConsultantId());
 
-        Slot responseSlot = new Slot(appointment.getAppStart(), appointment.getAppEnd(), SlotStatus.BOOKED);
-
-        if (existingSlot.getStatus() == SlotStatus.BOOKED) {
-            responseSlot.setStatus(SlotStatus.BOOKING_FAILED);
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        } else {
-            apptService.saveAppointment(appointment);
-            response.setStatus(HttpServletResponse.SC_CREATED);
+        boolean validSlotSize = false;
+        for (long size: availableSlotSizes) {
+            if (requestedApptSize == size) {
+                validSlotSize = true;
+                break;
+            }
         }
 
+        Slot responseSlot = new Slot(appointment.getAppStart(), appointment.getAppEnd(), SlotStatus.BOOKED);
+        if (validSlotSize) {
+            Slot existingSlot = checkSlot(appointment.getConsultantId(), appointment.getAppDate(),
+                    appointment.getAppStart(), appointment.getAppEnd());
+
+            if (existingSlot.getStatus() == SlotStatus.BOOKED) {
+                responseSlot.setStatus(SlotStatus.BOOKING_FAILED);
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            } else {
+                apptService.saveAppointment(appointment);
+                response.setStatus(HttpServletResponse.SC_CREATED);
+            }
+        } else {
+            responseSlot.setStatus(SlotStatus.INVALID_SLOT_SIZE);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        }
 
         return responseSlot;
     }
