@@ -16,7 +16,7 @@
 
 ## Design assumptions
 ### User
-* Front end assumes 'Dr. John' is logged in. This could fairly easily be changed by adding
+* Front examples assume 'Dr. John' is logged in. This could fairly easily be changed by adding
  credential based log in which would present the user's own diary.
  * Furthermore, diary's could be shared by adding role based access; eg. view diary, update diary
  , delete entry.
@@ -24,13 +24,20 @@
 * The dentist's schedule is currently held in the database.
 * There are two daily periods: morning and afternoon, both provide slots of 15 minutes.
 * The data is retrieved by a simple service, however this service could be changed to access
- another microservice accessing a more complex scheduling system for example which could be used
- by the dentist to specify their own schedule in that case only the ScheduleClient service and
-  the SlotGenerator would have to be updated along with possibly some json annotations. No
+ another microservice, which could in turn access a more complex scheduling system for example. That
+ could be used by the dentist to specify their own schedule in that case only the ScheduleClient
+  service and the SlotGenerator would have to be updated along with possibly some json annotations. No
    business logic or workflow would be affected, purely the interface to the backend system.
  
  
 ## Testing
+
+### Unit test coverage
+* Some items which are simply wiring managed by spring have no unit tests as Pivotal test spring
+, for example: repositories (which are just interfaces) and service methods which are just a
+ proxy for those repositories: `AppointmentService.loadAppointments`.
+* Java beans which are nothing but getters and setters have no coverage.
+
 #### Running the application
 * Clone this repository
 * Run `mvn install`. This will pull down all dependencies, run tests and produce the test report.
@@ -48,13 +55,16 @@ http://localhost:8080/h2-console/
 |Password|password|
 
 #### Testing the backend
-* Retrieve data for this week
+* Retrieve data for this week (using GET)
 http://localhost:8080/diary/slots/1
-* Retrieve data for a consultant for a date range
+
+* Retrieve data for a consultant for a date range (using GET)
 http://localhost:8080/diary/slots/1?rangeStart=2020-05-20&rangeEnd=2020-05-21
-* Check an individual slot
+
+* Check an individual slot (using GET)
 http://localhost:8080/diary/slot/1?date=2020-05-21&appStart=14:30&appEnd=14:45
-* Create a new appointment
+
+* Create a new appointment (using POST)
 http://localhost:8080/diary/appointment
 with payload
 ```
@@ -67,7 +77,7 @@ with payload
   "complaint": "I said wobbly tooth!!"
 }
 ```
-* Attempt to create a new appointment when one already exists
+* Attempt to create a new appointment when one already exists (using POST)
 http://localhost:8080/diary/appointment
 with payload
 ```
@@ -80,4 +90,5 @@ with payload
   "complaint": "I said wobbly tooth!!"
 }
 ```
-dsadjhuh
+* Delete an appointment (using DELETE)
+http://localhost:8080/diary/appointment/3

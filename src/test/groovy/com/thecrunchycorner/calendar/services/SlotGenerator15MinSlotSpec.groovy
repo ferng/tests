@@ -2,17 +2,15 @@ package com.thecrunchycorner.calendar.services
 
 import com.thecrunchycorner.calendar.domain.Schedule
 import com.thecrunchycorner.calendar.domain.SlotStatus
-import com.thecrunchycorner.calendar.domain.SlotWindow
 import spock.lang.Specification
 
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
 
 class SlotGenerator15MinSlotSpec extends Specification {
     def test() {
         given:
-        def schedule = new Schedule(1, LocalTime.of(9,0), LocalTime.of(12,30), LocalTime.of(13,
+        def schedule = new Schedule(1, LocalTime.of(9, 0), LocalTime.of(12, 30), LocalTime.of(13,
                 30), LocalTime.of(16, 30), 15);
         def generator = new SlotGenerator();
 
@@ -29,8 +27,8 @@ class SlotGenerator15MinSlotSpec extends Specification {
         slots.size() == 5
         slots.get(0).getSlots().size == 26
 
-        slot0.getStart() == LocalTime.of(9,00)
-        slot0.getEnd() == LocalTime.of(9,15)
+        slot0.getStart() == LocalTime.of(9, 00)
+        slot0.getEnd() == LocalTime.of(9, 15)
         slot0.getStatus() == SlotStatus.FREE
         slot1.getStart() == LocalTime.of(9, 15)
         slot1.getEnd() == LocalTime.of(9, 30)

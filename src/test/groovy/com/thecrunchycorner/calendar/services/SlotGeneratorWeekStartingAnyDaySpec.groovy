@@ -11,7 +11,7 @@ class SlotGeneratorWeekStartingAnyDaySpec extends Specification {
     def test() {
         given:
         def generator = new SlotGenerator();
-        def schedule = new Schedule(1, LocalTime.of(9,0), LocalTime.of(12,30), LocalTime.of(13,
+        def schedule = new Schedule(1, LocalTime.of(9, 0), LocalTime.of(12, 30), LocalTime.of(13,
                 30), LocalTime.of(16, 30), 15);
         def slots = generator.getSlots(LocalDate.of(2020, 5, 18), schedule);
         def firstDay = slots.get(0).getDay()

@@ -1,8 +1,6 @@
 package com.thecrunchycorner.calendar.services.backend;
 
 import com.thecrunchycorner.calendar.domain.Appointment;
-import com.thecrunchycorner.calendar.domain.Slot;
-import com.thecrunchycorner.calendar.domain.SlotStatus;
 import com.thecrunchycorner.calendar.repository.AppointmentRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AppointmentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppointmentService.class);
 
-    private AppointmentRepository repository;
+    private final AppointmentRepository repository;
 
     public AppointmentService(AppointmentRepository repository) {
         this.repository = repository;
@@ -29,22 +27,15 @@ public class AppointmentService {
         return repository.findByConsultantIdAndAppDateBetween(consultantId, start, end).orElse(new ArrayList<>());
     }
 
-    public Appointment checkSlot(long consultantId, LocalDate date, LocalTime start,
-                                 LocalTime end) {
-        LOGGER.debug("Checking slot status for consultant{}", consultantId);
-
-        return repository.findByConsultantIdAndAppDateAndAppStartBetween(consultantId, date, start
-                , end);
-    }
-
     @Transactional
-    public Appointment saveAppointment(Appointment appointment) {
+    public void saveAppointment(Appointment appointment) {
+        LOGGER.debug("Attempting to create appointment for {}", appointment.getCustomerId());
         repository.save(appointment);
-        return appointment;
     }
 
     @Transactional
     public Long deleteAppointment(long id) {
+        LOGGER.debug("Attempting to delete appointment {}", id);
         return repository.removeById(id);
     }
 }

@@ -1,6 +1,5 @@
 package com.thecrunchycorner.calendar.services;
 
-import com.thecrunchycorner.calendar.domain.Appointment;
 import com.thecrunchycorner.calendar.domain.DailySlots;
 import com.thecrunchycorner.calendar.domain.Schedule;
 import com.thecrunchycorner.calendar.domain.Slot;
@@ -43,9 +42,7 @@ public class SlotGenerator {
     private ArrayList<Slot> getDailySlots(Schedule schedule) {
         ArrayList<SlotWindow> slotWindows = getSlotWindows(schedule);
         ArrayList<Slot> slots = new ArrayList<>();
-        slotWindows.forEach((slotWindow -> {
-            slots.addAll(generateSlotsForWindow(slotWindow, schedule.getSlotDuration()));
-        }));
+        slotWindows.forEach((slotWindow -> slots.addAll(generateSlotsForWindow(slotWindow, schedule.getSlotDuration()))));
         return slots;
     }
 
@@ -72,9 +69,9 @@ public class SlotGenerator {
             end = start.plusMinutes(slotDuration);
             slots.add(new Slot(start, end, SlotStatus.FREE));
             start = start.plusMinutes(slotDuration);
-        } while (! end.isAfter(slotWindow.getEnd()));
+        } while (!end.isAfter(slotWindow.getEnd()));
 
-        slots.remove(slots.size() -1);
+        slots.remove(slots.size() - 1);
         return slots;
     }
 }

@@ -12,12 +12,12 @@ import javax.persistence.TableGenerator;
 
 @Entity
 @Table(schema = "public", name = "APPOINTMENTS")
-@TableGenerator(name="db", initialValue=100, allocationSize=50)
+@TableGenerator(name = "db", initialValue = 100)
 public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "db")
-    @Column(name= "ID", updatable = false, nullable = false)
+    @Column(name = "ID", updatable = false, nullable = false)
     private long id;
 
     private long customerId;

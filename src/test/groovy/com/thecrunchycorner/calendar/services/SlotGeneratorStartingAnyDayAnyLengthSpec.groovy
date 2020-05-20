@@ -10,7 +10,7 @@ import java.time.LocalTime
 class SlotGeneratorStartingAnyDayAnyLengthSpec extends Specification {
     def test() {
         given:
-        def schedule = new Schedule(1, LocalTime.of(9,0), LocalTime.of(12,30), LocalTime.of(13,
+        def schedule = new Schedule(1, LocalTime.of(9, 0), LocalTime.of(12, 30), LocalTime.of(13,
                 30), LocalTime.of(16, 30), 15);
         def generator = new SlotGenerator();
 

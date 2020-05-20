@@ -33,16 +33,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class SlotController {
 
     @Autowired
-    private ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
 
     @Autowired
-    private AppointmentService apptService;
+    private final AppointmentService apptService;
 
     @Autowired
-    private SlotGenerator generator;
+    private final SlotGenerator generator;
 
     @Autowired
-    private SlotEnricher enricher;
+    private final SlotEnricher enricher;
+
+    public SlotController(ScheduleService scheduleService, AppointmentService apptService,
+                          SlotGenerator generator, SlotEnricher enricher) {
+        this.scheduleService = scheduleService;
+        this.apptService = apptService;
+        this.generator = generator;
+        this.enricher = enricher;
+    }
+
 
     @GetMapping(value = "/slots/{consultantId}")
     public List<DailySlots> getSlots(@PathVariable String consultantId,
@@ -63,10 +72,9 @@ public class SlotController {
             end = LocalDate.parse(rangeEnd, DateTimeFormatter.ISO_LOCAL_DATE).plusDays(1);
         }
 
-        List<DailySlots> slots = loadSlots(parsedConsultantId, start, end);
-
-        return slots;
+        return loadSlots(parsedConsultantId, start, end);
     }
+
 
     @GetMapping(value = "/slot/{consultantId}")
     public Slot checkSlot(@PathVariable String consultantId,
@@ -90,46 +98,31 @@ public class SlotController {
             end = LocalTime.parse(appEnd, DateTimeFormatter.ISO_TIME);
         }
 
-        Slot slotResponse = checkSlot(parsedConsultantId, parsedDate, start, end);
-
-        return slotResponse;
+        return getSlotResponse(parsedConsultantId, parsedDate, start, end);
     }
 
-    private Slot checkSlot(long parsedConsultantId, LocalDate parsedDate, LocalTime start,
-                           LocalTime end) {
-        ArrayList<Slot> slots =
-                loadSlots(parsedConsultantId, parsedDate, parsedDate.plusDays(1)).get(0).getSlots();
-
-        Appointment proposed = new Appointment(parsedConsultantId, parsedDate, start, end);
-        Slot slotResponse = new Slot(start, end, SlotStatus.FREE);
-
-        for (Slot slot : slots) {
-            if (SlotCalculator.slotAlreadyBooked(slot, proposed)) {
-                slotResponse.setStatus(SlotStatus.BOOKED);
-                break;
-            }
-        }
-        return slotResponse;
-    }
 
     @PostMapping(value = "/appointment")
     public Slot addAppointment(@RequestBody Appointment appointment,
                                HttpServletResponse response) {
 
         long requestedApptSize = appointment.getAppStart().until(appointment.getAppEnd(), MINUTES);
-        List<Integer> availableSlotSizes = scheduleService.loadSlotSizes(appointment.getConsultantId());
+        List<Integer> availableSlotSizes =
+                scheduleService.loadSlotSizes(appointment.getConsultantId());
 
         boolean validSlotSize = false;
-        for (long size: availableSlotSizes) {
+        for (long size : availableSlotSizes) {
             if (requestedApptSize == size) {
                 validSlotSize = true;
                 break;
             }
         }
 
-        Slot responseSlot = new Slot(appointment.getAppStart(), appointment.getAppEnd(), SlotStatus.BOOKED);
+        Slot responseSlot = new Slot(appointment.getAppStart(), appointment.getAppEnd(),
+                SlotStatus.BOOKED);
         if (validSlotSize) {
-            Slot existingSlot = checkSlot(appointment.getConsultantId(), appointment.getAppDate(),
+            Slot existingSlot = getSlotResponse(appointment.getConsultantId(),
+                    appointment.getAppDate(),
                     appointment.getAppStart(), appointment.getAppEnd());
 
             if (existingSlot.getStatus() == SlotStatus.BOOKED) {
@@ -154,14 +147,21 @@ public class SlotController {
     }
 
 
+    private Slot getSlotResponse(long parsedConsultantId, LocalDate parsedDate, LocalTime start,
+                                 LocalTime end) {
+        ArrayList<Slot> slots =
+                loadSlots(parsedConsultantId, parsedDate, parsedDate.plusDays(1)).get(0).getSlots();
 
-    private Appointment getAppointmentInWindow(long parsedConsultantId, LocalDate parsedDate,
-                                               LocalTime parsedStart) {
-        // to check all slots an appointment could spread through
-        int apptWindow = scheduleService.getLargestSlot(parsedConsultantId)
-                - scheduleService.getSmallestSlot(parsedConsultantId);
-        return apptService.checkSlot(parsedConsultantId, parsedDate,
-                parsedStart.minusMinutes(apptWindow), parsedStart);
+        Appointment proposed = new Appointment(parsedConsultantId, parsedDate, start, end);
+        Slot slotResponse = new Slot(start, end, SlotStatus.FREE);
+
+        for (Slot slot : slots) {
+            if (SlotCalculator.slotAlreadyBooked(slot, proposed)) {
+                slotResponse.setStatus(SlotStatus.BOOKED);
+                break;
+            }
+        }
+        return slotResponse;
     }
 
 

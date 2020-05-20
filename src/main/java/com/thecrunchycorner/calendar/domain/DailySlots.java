@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class DailySlots {
-    LocalDate day;
-    ArrayList<Slot> slots;
+    final LocalDate day;
+    final ArrayList<Slot> slots;
 
     public DailySlots(LocalDate day, ArrayList<Slot> slots) {
         this.day = day;

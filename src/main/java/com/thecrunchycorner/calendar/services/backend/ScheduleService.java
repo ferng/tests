@@ -5,7 +5,6 @@ import com.thecrunchycorner.calendar.repository.ScheduleRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import javax.persistence.criteria.CriteriaBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class ScheduleService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleService.class);
 
-    private ScheduleRepository repository;
+    private final ScheduleRepository repository;
 
     public ScheduleService(ScheduleRepository repository) {
         this.repository = repository;
@@ -26,8 +25,8 @@ public class ScheduleService {
         return repository.findByConsultantId(consultantId).orElse(new Schedule());
     }
 
-    // This would be retrieved from another backend exacly as with  loadSchedule above,
-    // could be cached if they don't change regularly
+    // This would be retrieved from another backend exactly as with loadSchedule above,
+    // could be cached if values don't change regularly
     public List<Integer> loadSlotSizes(long consultantId) {
         ArrayList<Integer> slotSizes = new ArrayList<>();
         slotSizes.add(15);

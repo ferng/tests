@@ -13,7 +13,7 @@ public class Consultant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name= "ID", updatable = false, nullable = false)
+    @Column(name = "ID", updatable = false, nullable = false)
     private long id;
 
     private String name;

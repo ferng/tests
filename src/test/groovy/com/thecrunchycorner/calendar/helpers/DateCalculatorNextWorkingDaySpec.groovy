@@ -4,7 +4,7 @@ import spock.lang.Specification
 
 import java.time.LocalDate
 
-class DateCalculatorNextWorkingDaySpec extends Specification{
+class DateCalculatorNextWorkingDaySpec extends Specification {
     private static MONDAY = LocalDate.of(2020, 5, 4);
     private static TUESDAY = LocalDate.of(2020, 5, 5);
     private static WEDNESDAY = LocalDate.of(2020, 5, 6);
@@ -23,13 +23,13 @@ class DateCalculatorNextWorkingDaySpec extends Specification{
         actualNextWorkingDay == expected
 
         where:
-        day         | expected
-        MONDAY      | TUESDAY
-        TUESDAY     | WEDNESDAY
-        WEDNESDAY   | THURSDAY
-        THURSDAY    | FRIDAY
-        FRIDAY      | NEXT_MONDAY
-        SATURDAY    | NEXT_MONDAY
-        SUNDAY      | NEXT_MONDAY
+        day       | expected
+        MONDAY    | TUESDAY
+        TUESDAY   | WEDNESDAY
+        WEDNESDAY | THURSDAY
+        THURSDAY  | FRIDAY
+        FRIDAY    | NEXT_MONDAY
+        SATURDAY  | NEXT_MONDAY
+        SUNDAY    | NEXT_MONDAY
     }
 }
