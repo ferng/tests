@@ -38,6 +38,9 @@
  proxy for those repositories: `AppointmentService.loadAppointments`.
 * Java beans which are nothing but getters and setters have no coverage.
 
+### Generate report
+`mvn surefire-report:report` - the report is written to: target/site/surefire-report.html
+
 #### Running the application
 * Clone this repository
 * Run `mvn install`. This will pull down all dependencies, run tests and produce the test report.
