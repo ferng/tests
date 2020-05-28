@@ -10,7 +10,7 @@ import spock.lang.Specification
 import javax.servlet.http.HttpServletResponse
 import java.time.LocalDate
 
-class SlotControllerGetSlotsTestDefaultParamParsingSpec extends Specification {
+class SlotControllerGetSlotsDefaultParamParsingSpec extends Specification {
     def test() {
         given:
         def scheduleService = Mock(ScheduleService.class)
