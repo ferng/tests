@@ -8,11 +8,15 @@ The application uses google translate.
 translate [OPTION]
 
 ```bash
+    -h, --help
+            display option / usage help
+    -v, --version
+            display version number
     -s, --source=LANGUAGE
             language the source text is written in; this option may be ommitted or will be
  ignored if the input file starts with the line:
                 --- LANGUAGE: <LANGUAGE> ---
-    -d, --destination=LANGUAGE
+    -t, --target=LANGUAGE
             language to translate the text into
     -i, --input=FILE
             a file containing the text to be translated; may optionally include the line:
@@ -25,7 +29,7 @@ translate [OPTION]
 
 ### Defaults
 * If no source language is specified either as an option or within the input file English will be used as a default
-* If no destination language is specified either as an option or within the input file Spanish will be used as a default
+* If no target language is specified either as an option or within the input file Spanish will be used as a default
 * If no input file is specified source.txt in the current directory will be read
 * If no output file is specified target.txt in the current directory will be created
 
@@ -56,11 +60,11 @@ mvn clean test
 ### Running the program via maven
 The program can be run without a full build via maven. This will use the defaults specified above
 ```bash
-mvn clean exec:java
+mvn exec:java
 ```
 or parameters can be passed
 ```bash
-mvn clean exec:java -Dexec.args="-s=en -d=ja -i=source.txt -o=target.txt"
+mvn exec:java -Dexec.args="-s en -t ja -i source.txt -o target.txt"
 ```
 
 
@@ -73,5 +77,5 @@ mvn clean package
 java -jar target/topcoder_translate-1.0-SNAPSHOT.jar 
 
 #or parameters can be passed
-java -jar target/topcoder_translate-1.0-SNAPSHOT.jar -s=en -d=ja -i=source.txt -o=target.txt
+java -jar target/topcoder_translate-1.0-SNAPSHOT.jar -s en -t ja -i source.txt -o target.txt
 ```
