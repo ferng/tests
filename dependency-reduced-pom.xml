@@ -13,9 +13,17 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler.version}</version>
         <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>info.picocli</groupId>
+              <artifactId>picocli-codegen</artifactId>
+              <version>${picocli.version}</version>
+            </path>
+          </annotationProcessorPaths>
           <compilerArgs>
             <arg>-verbose</arg>
             <arg>-Xlint:all,-options,-path</arg>
+            <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
           </compilerArgs>
         </configuration>
       </plugin>

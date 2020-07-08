@@ -9,7 +9,7 @@ import picocli.CommandLine.Option;
         description = "Translate text in one file to another language, then write the translation" +
                 " to another language",
         version = "Translate 0.0.1")
-public class Parser {
+public class OptParser {
     @Option(names = {"-s", "--source"}, description = "source language")
     private String source = "en";
 
