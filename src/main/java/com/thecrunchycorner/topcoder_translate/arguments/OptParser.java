@@ -22,6 +22,9 @@ public class OptParser {
     @Option(names = { "-o", "--output" }, description = "file to save translated text to")
     private File output = new File("target.txt");
 
+    @Option(names = { "-l", "--languages" }, description = "list available languages")
+    private boolean isLanguageHelpRequested = false;
+
     public String getSource() {
         return source;
     }
@@ -36,5 +39,9 @@ public class OptParser {
 
     public File getOutput() {
         return output;
+    }
+
+    public boolean isLanguageHelpRequested() {
+        return isLanguageHelpRequested;
     }
 }

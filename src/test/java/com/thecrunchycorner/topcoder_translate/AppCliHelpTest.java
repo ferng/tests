@@ -5,12 +5,10 @@ import java.io.PrintStream;
 import org.junit.After;
 import org.junit.Before;
 
+import static com.thecrunchycorner.topcoder_translate.TestHelper.getMsg;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
-import picocli.CommandLine;
 
 public class AppCliHelpTest
 {
@@ -34,59 +32,31 @@ public class AppCliHelpTest
     }
 
     @Test
-    public void shoouldDisplayInvalidOptionAndHelpWithSingleInvalidOption()
+    public void shouldDisplayInvalidOptionAndHelpWithSingleInvalidOption()
     {
         String[] args = {"-x"};
         App.main(args);
 
-        assertEquals("Unknown parameter: [-x]\n" +
-                "Usage: translate [-hV] [-i=<input>] [-o=<output>] [-s=<source>] [-t=<target>]\n" +
-                "Translate text in one file to another language, then write the translation to\n" +
-                "another language\n" +
-                "  -h, --help              Show this help message and exit.\n" +
-                "  -i, --input=<input>     file with text to be translated\n" +
-                "  -o, --output=<output>   file to save translated text to\n" +
-                "  -s, --source=<source>   source language\n" +
-                "  -t, --target=<target>   target language\n" +
-                "  -V, --version           Print version information and exit.\n", out.toString());
+        assertEquals("Unknown parameter: [-x]\n" + getMsg(), out.toString());
         assertEquals("", err.toString());
     }
 
     @Test
-    public void shoouldDisplayInvalidOptionAndHelpWithEmbeddedInvalidOption()
+    public void shouldDisplayInvalidOptionAndHelpWithEmbeddedInvalidOption()
     {
         String[] args = {"-s", "en", "-x"};
         App.main(args);
-
-        assertEquals("Unknown parameter: [-x]\n" +
-                "Usage: translate [-hV] [-i=<input>] [-o=<output>] [-s=<source>] [-t=<target>]\n" +
-                "Translate text in one file to another language, then write the translation to\n" +
-                "another language\n" +
-                "  -h, --help              Show this help message and exit.\n" +
-                "  -i, --input=<input>     file with text to be translated\n" +
-                "  -o, --output=<output>   file to save translated text to\n" +
-                "  -s, --source=<source>   source language\n" +
-                "  -t, --target=<target>   target language\n" +
-                "  -V, --version           Print version information and exit.\n", out.toString());
+        assertEquals("Unknown parameter: [-x]\n" + getMsg(), out.toString());
         assertEquals("", err.toString());
     }
 
     @Test
-    public void shoouldDisplayHelpWithEmbeddedInvalidOptionWithHelpOption()
+    public void shouldDisplayHelpWithEmbeddedInvalidOptionWithHelpOption()
     {
         String[] args = {"-s", "en", "-h"};
         App.main(args);
 
-        assertEquals(
-                "Usage: translate [-hV] [-i=<input>] [-o=<output>] [-s=<source>] [-t=<target>]\n" +
-                "Translate text in one file to another language, then write the translation to\n" +
-                "another language\n" +
-                "  -h, --help              Show this help message and exit.\n" +
-                "  -i, --input=<input>     file with text to be translated\n" +
-                "  -o, --output=<output>   file to save translated text to\n" +
-                "  -s, --source=<source>   source language\n" +
-                "  -t, --target=<target>   target language\n" +
-                "  -V, --version           Print version information and exit.\n", out.toString());
+        assertEquals(getMsg(), out.toString());
         assertEquals("", err.toString());
     }
 }
