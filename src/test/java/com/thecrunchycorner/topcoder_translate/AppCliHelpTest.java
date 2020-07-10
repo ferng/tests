@@ -1,17 +1,15 @@
 package com.thecrunchycorner.topcoder_translate;
 
+import static com.thecrunchycorner.topcoder_translate.TestHelper.getMsg;
+import static org.junit.Assert.assertEquals;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import org.junit.After;
 import org.junit.Before;
-
-import static com.thecrunchycorner.topcoder_translate.TestHelper.getMsg;
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
-public class AppCliHelpTest
-{
+public class AppCliHelpTest {
     final PrintStream originalOut = System.out;
     final PrintStream originalErr = System.err;
     final ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -32,8 +30,7 @@ public class AppCliHelpTest
     }
 
     @Test
-    public void shouldDisplayInvalidOptionAndHelpWithSingleInvalidOption()
-    {
+    public void shouldDisplayInvalidOptionAndHelpWithSingleInvalidOption() {
         String[] args = {"-x"};
         App.main(args);
 
@@ -42,8 +39,7 @@ public class AppCliHelpTest
     }
 
     @Test
-    public void shouldDisplayInvalidOptionAndHelpWithEmbeddedInvalidOption()
-    {
+    public void shouldDisplayInvalidOptionAndHelpWithEmbeddedInvalidOption() {
         String[] args = {"-s", "en", "-x"};
         App.main(args);
         assertEquals("Unknown parameter: [-x]\n" + getMsg(), out.toString());
@@ -51,8 +47,7 @@ public class AppCliHelpTest
     }
 
     @Test
-    public void shouldDisplayHelpWithEmbeddedInvalidOptionWithHelpOption()
-    {
+    public void shouldDisplayHelpWithEmbeddedInvalidOptionWithHelpOption() {
         String[] args = {"-s", "en", "-h"};
         App.main(args);
 

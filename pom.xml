@@ -19,14 +19,15 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <junit.version>4.12</junit.version>
         <picocli.version>4.3.2</picocli.version>
 
         <maven-compiler.version>3.8.0</maven-compiler.version>
         <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
         <maven-shade-plugin.version>3.2.0</maven-shade-plugin.version>
         <maven-surefire.version>2.22.2</maven-surefire.version>
-        <jcip.version>1.0</jcip.version>
+
+        <junit.version>4.12</junit.version>
+        <mockito.version>3.3.3</mockito.version>
 
         <test.exclude>nothing</test.exclude>
     </properties>
@@ -46,11 +47,10 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/net.jcip/jcip-annotations -->
         <dependency>
-            <groupId>net.jcip</groupId>
-            <artifactId>jcip-annotations</artifactId>
-            <version>${jcip.version}</version>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -122,15 +122,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire.version}</version>
                 <configuration>
-<!--                    <forkCount>1</forkCount>-->
-<!--                    <useUnlimitedThreads>true</useUnlimitedThreads>-->
-<!--                    <runOrder>random</runOrder>-->
-<!--                    <redirectTestOutputToFile>true</redirectTestOutputToFile>-->
-<!--                    <rerunFailingTestsCount>1</rerunFailingTestsCount>-->
-<!--                    <parallel>classes</parallel>-->
-<!--                    <forkedProcessExitTimeoutInSeconds>2</forkedProcessExitTimeoutInSeconds>-->
-
-
                     <useFile>false</useFile>
                     <includes>
                         <include>**/*Test.java</include>
