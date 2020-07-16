@@ -13,12 +13,12 @@ public class InputFileTest {
 
     @Test
     public void shouldReturnFormattedTextReadFromFile() {
-        String sourceText = "once upon\na time there\nwere three\n";
+        String sourceText = "once upon. a time there. were three.\n";
         StringReader source = new StringReader(sourceText);
 
-        String expected = "once upon///a time there///were three";
+        String expected = "once upon. a time there. were three.";
 
-        String actual = InputFile.getSourceText(source, "///");
+        String actual = InputFile.getSourceText(source);
 
         Assert.assertEquals(expected, actual);
     }
@@ -30,7 +30,7 @@ public class InputFileTest {
 
         String expected = "";
 
-        String actual = InputFile.getSourceText(source, "///");
+        String actual = InputFile.getSourceText(source);
 
         Assert.assertEquals(expected, actual);
     }

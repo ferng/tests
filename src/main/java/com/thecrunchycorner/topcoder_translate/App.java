@@ -5,25 +5,32 @@ import com.thecrunchycorner.topcoder_translate.arguments.OptParser;
 import com.thecrunchycorner.topcoder_translate.arguments.ParserResult;
 import com.thecrunchycorner.topcoder_translate.file_processor.InputFile;
 import com.thecrunchycorner.topcoder_translate.file_processor.OutputFile;
-import java.io.FileInputStream;
+import com.thecrunchycorner.topcoder_translate.services.Translation;
+import com.thecrunchycorner.topcoder_translate.services.response.Sentences;
+import com.thecrunchycorner.topcoder_translate.services.response.TranslationText;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.List;
 import picocli.CommandLine;
 
 public class App {
+    // Argument parser
     private static final String SECTION_KEY_HEADER_HEADING = "headerHeading";
     private static final OptParser OPT_PARSER = new OptParser();
     private static final CommandLine CMD = new CommandLine(OPT_PARSER);
+
+    // Application
     private static final boolean SUCCESS = true;
     private static final boolean FAILURE = false;
     private static final ParserResult SUCCESS_RESULT = new ParserResult(SUCCESS, "");
     private static ParserResult result = SUCCESS_RESULT;
-    private static final String LANGUAGE_HELP =
-            "Available languages: " + LangParser.getLanguages().toString() + "\n";
     private static final int EXIT_CODE_SUCCESS = 0;
     private static final int EXIT_CODE_FAILURE = 1;
-    private static final String DELIMITER = "///";
+
+    // In production these would be in a config file or db somewhere
+    private static final String LANGUAGE_HELP =
+            "Available languages: " + LangParser.getLanguages().toString() + "\n";
+    private static final String ENDPOINT = "https://translate.google.com/translate_a/single?";
+
 
     public static void main(String[] args) {
         CMD.getHelpSectionMap().remove(SECTION_KEY_HEADER_HEADING);
@@ -38,23 +45,27 @@ public class App {
             CMD.getHelpSectionMap().put(SECTION_KEY_HEADER_HEADING,
                     help -> help.createHeading(LANGUAGE_HELP));
             CMD.usage(System.out);
-        } else
-        {
+        } else {
             parseLanguageOptions();
             try {
                 String sourceText =
-                        InputFile.getSourceText(new FileReader(OPT_PARSER.getInput()), DELIMITER);
-                String targetText = sourceText;
-                OutputFile.writeTargetText(new FileWriter(OPT_PARSER.getOutput()), DELIMITER,
+                        InputFile.getSourceText(new FileReader(OPT_PARSER.getInput()));
+                String targetText = Translation.translate(ENDPOINT, sourceText,
+                        OPT_PARSER.getSource(), OPT_PARSER.getTarget());
+                OutputFile.writeTargetText(new FileWriter(OPT_PARSER.getOutput()),
                         targetText);
 
-                System.out.println("Translation complete");
+                System.out.println("Translation process complete");
                 System.exit(EXIT_CODE_SUCCESS);
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
                 System.exit(EXIT_CODE_FAILURE);
             }
         }
+    }
+
+    private static TranslationText getPlop() {
+        return new TranslationText();
     }
 
     private static void parseLanguageOptions() {

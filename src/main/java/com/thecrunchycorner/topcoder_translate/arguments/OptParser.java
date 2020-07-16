@@ -14,7 +14,7 @@ public class OptParser {
     private String source = "en";
 
     @Option(names = {"-t", "--target"}, description = "target language")
-    private String target = "ja";
+    private String target = "es";
 
     @Option(names = { "-i", "--input" }, description = "file with text to be translated")
     private File input = new File("source.txt");

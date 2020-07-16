@@ -7,14 +7,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class InputFile {
-    public static String getSourceText(Reader source, String delimiter) {
+    public static String getSourceText(Reader source) {
         BufferedReader reader = new BufferedReader(source);
 
         Stream<String> text = reader.lines();
 
         String response = text
                 .map(Objects::toString)
-                .collect(Collectors.joining(delimiter));
+                .collect(Collectors.joining());
 
         return response;
     }

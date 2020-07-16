@@ -24,12 +24,12 @@ public class OutputFileTest {
 
     @Test
     public void shouldWriteFormattedTextToFile() {
-        String sourceText = "once upon///a time there///were three";
+        String sourceText = "once upon. a time there. were three.";
         StringWriter target = new StringWriter();
 
-        String expected = "once upon\na time there\nwere three\n";
+        String expected = "once upon. a time there. were three.";
 
-        OutputFile.writeTargetText(target, "///", sourceText);
+        OutputFile.writeTargetText(target, sourceText);
 
         String actual = target.toString();
         Assert.assertEquals(expected, actual);
@@ -40,9 +40,9 @@ public class OutputFileTest {
         String sourceText = "";
         StringWriter target = new StringWriter();
 
-        String expected = "\n";
+        String expected = "";
 
-        OutputFile.writeTargetText(target, "///", sourceText);
+        OutputFile.writeTargetText(target, sourceText);
 
         String actual = target.toString();
         Assert.assertEquals(expected, actual);
