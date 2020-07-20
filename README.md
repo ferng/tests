@@ -46,7 +46,7 @@ For the purposes of this exercise the following languages can used for both sour
 
 
 ## Executing the application
-### Pull down dependencies
+### Pull down dependencies and build the application
 ```bash
 mvn clean install
 ```
@@ -58,7 +58,7 @@ mvn clean test
 
 
 ### Running the program via maven
-The program can be run without a full build via maven. This will use the defaults specified above
+This will use the defaults specified above
 ```bash
 mvn exec:java
 ```

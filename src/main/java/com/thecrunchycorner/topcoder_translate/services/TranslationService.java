@@ -1,17 +1,14 @@
 package com.thecrunchycorner.topcoder_translate.services;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
 import com.thecrunchycorner.topcoder_translate.services.response.Sentences;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
@@ -24,7 +21,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-public class Translation {
+public class TranslationService {
     public static String translate(String endpoint,
                                    String text,
                                    String sourceLang,
@@ -47,16 +44,18 @@ public class Translation {
             ResponseHandler<String> responseHandler = prepResponseHandler();
 
             responseBody = httpclient.execute(request, responseHandler);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
         }
 
         return parseTranslation(responseBody);
     }
 
+
     private static String parseTranslation(String response) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        Sentences sentences =  mapper.readValue(response, Sentences.class);
+        Sentences sentences = mapper.readValue(response, Sentences.class);
         StringBuilder builder = new StringBuilder();
 
         sentences.getTranslations().forEach((translationText -> {
@@ -65,11 +64,7 @@ public class Translation {
 
         String translation = builder.toString();
 
-
-        return  translation;
-
-
-
+        return translation;
     }
 
     private static List<NameValuePair> prepParams() {
@@ -90,10 +85,10 @@ public class Translation {
         return params;
     }
 
-    private static ResponseHandler<String> prepResponseHandler() {
+    static ResponseHandler<String> prepResponseHandler() {
         return response -> {
             int status = response.getStatusLine().getStatusCode();
-            if (status >= 200) {
+            if (status == HttpStatus.SC_OK || status == HttpStatus.SC_NOT_MODIFIED) {
                 HttpEntity entity = response.getEntity();
                 return entity != null ? EntityUtils.toString(entity) : null;
             } else {
@@ -111,9 +106,7 @@ public class Translation {
                 .setHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded")
                 .setHeader(HttpHeaders.USER_AGENT, "AndroidTranslate/5.3.0.RC02" +
                         ".130475354-53000263 5.1 phone TRANSLATE_OPM5_TEST_1")
-                .setEntity(paparamEntity)
-                .build();
+                .setEntity(paparamEntity).build();
     }
-
 
 }

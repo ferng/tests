@@ -7,6 +7,7 @@ public class LangParser {
     private static ArrayList<String> languages = new ArrayList<>();
 
     static {
+        //in a production system this would be in a database somewhere
         for (Languages existingLanguage: Languages.values()) {
             languages.addAll(Arrays.asList(existingLanguage.getLanguageAliases()));
         }

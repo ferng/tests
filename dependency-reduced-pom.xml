@@ -70,7 +70,7 @@
         <configuration>
           <useFile>false</useFile>
           <includes>
-            <include>**/*Spec.java</include>
+            <include>**/*Test.java</include>
           </includes>
           <excludes>
             <exclude>${test.exclude}</exclude>
@@ -92,18 +92,77 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.3.3</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>byte-buddy</artifactId>
+          <groupId>net.bytebuddy</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>byte-buddy-agent</artifactId>
+          <groupId>net.bytebuddy</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>objenesis</artifactId>
+          <groupId>org.objenesis</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <version>2.0.7</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>powermock-module-junit4-common</artifactId>
+          <groupId>org.powermock</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>hamcrest-core</artifactId>
+          <groupId>org.hamcrest</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-mockito2</artifactId>
+      <version>2.0.7</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>powermock-api-support</artifactId>
+          <groupId>org.powermock</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.github.stefanbirkner</groupId>
+      <artifactId>system-rules</artifactId>
+      <version>1.19.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <properties>
     <maven-surefire.version>2.22.2</maven-surefire.version>
     <junit.version>4.12</junit.version>
     <java.version>1.8</java.version>
+    <system-rules.version>1.19.0</system-rules.version>
     <maven-shade-plugin.version>3.2.0</maven-shade-plugin.version>
     <maven-compiler.version>3.8.0</maven-compiler.version>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <powermock.version>2.0.7</powermock.version>
     <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
     <test.exclude>nothing</test.exclude>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jackson.version>2.9.10</jackson.version>
+    <mockito.version>3.3.3</mockito.version>
     <picocli.version>4.3.2</picocli.version>
     <maven.compiler.source>1.8</maven.compiler.source>
+    <http.version>4.5.12</http.version>
   </properties>
 </project>

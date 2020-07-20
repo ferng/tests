@@ -5,9 +5,7 @@ import com.thecrunchycorner.topcoder_translate.arguments.OptParser;
 import com.thecrunchycorner.topcoder_translate.arguments.ParserResult;
 import com.thecrunchycorner.topcoder_translate.file_processor.InputFile;
 import com.thecrunchycorner.topcoder_translate.file_processor.OutputFile;
-import com.thecrunchycorner.topcoder_translate.services.Translation;
-import com.thecrunchycorner.topcoder_translate.services.response.Sentences;
-import com.thecrunchycorner.topcoder_translate.services.response.TranslationText;
+import com.thecrunchycorner.topcoder_translate.services.TranslationService;
 import java.io.FileReader;
 import java.io.FileWriter;
 import picocli.CommandLine;
@@ -29,7 +27,7 @@ public class App {
     // In production these would be in a config file or db somewhere
     private static final String LANGUAGE_HELP =
             "Available languages: " + LangParser.getLanguages().toString() + "\n";
-    private static final String ENDPOINT = "https://translate.google.com/translate_a/single?";
+    private static final String ENDPOINT = "https://translate.goxogle.com/translate_a/single?";
 
 
     public static void main(String[] args) {
@@ -50,24 +48,16 @@ public class App {
             try {
                 String sourceText =
                         InputFile.getSourceText(new FileReader(OPT_PARSER.getInput()));
-                String targetText = Translation.translate(ENDPOINT, sourceText,
+                String targetText = TranslationService.translate(ENDPOINT, sourceText,
                         OPT_PARSER.getSource(), OPT_PARSER.getTarget());
                 OutputFile.writeTargetText(new FileWriter(OPT_PARSER.getOutput()),
                         targetText);
-
                 System.out.println("Translation process complete");
-                System.exit(EXIT_CODE_SUCCESS);
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
-                System.exit(EXIT_CODE_FAILURE);
             }
         }
     }
-
-    private static TranslationText getPlop() {
-        return new TranslationText();
-    }
-
     private static void parseLanguageOptions() {
         result = validateOptions();
 

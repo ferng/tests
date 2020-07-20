@@ -10,21 +10,7 @@ public class TranslationText {
     @JsonProperty("trans")
     private String translation;
 
-    @JsonProperty("orig")
-    private String original;
-
-    @JsonProperty("backend")
-    private String backend;
-
     public String getTranslation() {
         return translation;
-    }
-
-    public String getOriginal() {
-        return original;
-    }
-
-    public String getBackend() {
-        return backend;
     }
 }
