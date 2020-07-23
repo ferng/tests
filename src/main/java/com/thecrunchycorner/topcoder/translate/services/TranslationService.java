@@ -1,7 +1,7 @@
-package com.thecrunchycorner.topcoder_translate.services;
+package com.thecrunchycorner.topcoder.translate.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thecrunchycorner.topcoder_translate.services.response.Sentences;
+import com.thecrunchycorner.topcoder.translate.services.response.Sentences;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -37,13 +37,14 @@ public class TranslationService {
         params.add(new BasicNameValuePair("tl", targetLang));
         params.add(new BasicNameValuePair("q", text));
 
-        String responseBody = "";
+        String responseBody;
 
         try {
             HttpUriRequest request = prepRequest(endpoint, params);
             ResponseHandler<String> responseHandler = prepResponseHandler();
 
             responseBody = httpclient.execute(request, responseHandler);
+            httpclient.close();
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
@@ -58,9 +59,8 @@ public class TranslationService {
         Sentences sentences = mapper.readValue(response, Sentences.class);
         StringBuilder builder = new StringBuilder();
 
-        sentences.getTranslations().forEach((translationText -> {
-            builder.append(translationText.getTranslation());
-        }));
+        sentences.getTranslations().forEach((translationText ->
+                builder.append(translationText.getTranslation())));
 
         String translation = builder.toString();
 
@@ -97,7 +97,8 @@ public class TranslationService {
         };
     }
 
-    private static HttpUriRequest prepRequest(String endpoint, List<NameValuePair> params) throws UnsupportedEncodingException {
+    private static HttpUriRequest prepRequest(String endpoint, List<NameValuePair> params)
+            throws UnsupportedEncodingException {
         UrlEncodedFormEntity paparamEntity;
         paparamEntity = new UrlEncodedFormEntity(params);
 

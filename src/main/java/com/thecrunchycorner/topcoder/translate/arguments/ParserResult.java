@@ -1,4 +1,4 @@
-package com.thecrunchycorner.topcoder_translate.arguments;
+package com.thecrunchycorner.topcoder.translate.arguments;
 
 public class ParserResult {
     boolean success;

@@ -1,4 +1,4 @@
-package com.thecrunchycorner.topcoder_translate.services;
+package com.thecrunchycorner.topcoder.translate.services;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -38,7 +38,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = {"com.thecrunchycorner.topcoder_translate.*", "org.apache" +
+@PrepareForTest(fullyQualifiedNames = {"com.thecrunchycorner.topcoder.translate.*", "org.apache" +
         ".http.*"})
 public class TranslationServiceTest {
     private static final String URL = "http://no.com";
@@ -75,7 +75,8 @@ public class TranslationServiceTest {
         UrlEncodedFormEntity expectedEntity;
         expectedEntity = new UrlEncodedFormEntity(prepParams());
 
-        ArgumentCaptor<UrlEncodedFormEntity> argumentCaptor = ArgumentCaptor.forClass(UrlEncodedFormEntity.class);
+        ArgumentCaptor<UrlEncodedFormEntity> argumentCaptor =
+                ArgumentCaptor.forClass(UrlEncodedFormEntity.class);
         verify(requestBuilder).setEntity(argumentCaptor.capture());
         UrlEncodedFormEntity actualEntity = argumentCaptor.getValue();
 
@@ -100,11 +101,11 @@ public class TranslationServiceTest {
 
     @Test
     public void shouldParseResponseAndReturnEntity() throws Exception {
-        byte[] data = "abcdef".getBytes();
+        byte[] data = "abcdef".getBytes("UTF-8");
         ByteArrayInputStream stream = new ByteArrayInputStream(data);
         HttpEntity entity = mock(HttpEntity.class);
         when(entity.getContent()).thenReturn(stream);
-        when(entity.getContentLength()).thenReturn((long)data.length);
+        when(entity.getContentLength()).thenReturn((long) data.length);
 
         StatusLine statusLine = mock(StatusLine.class);
         when(statusLine.getStatusCode()).thenReturn(200);
@@ -112,10 +113,9 @@ public class TranslationServiceTest {
         HttpResponse response = mock(HttpResponse.class);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(response.getEntity()).thenReturn(entity);
-        String serviceResponse =  TranslationService.prepResponseHandler().handleResponse(response);
+        String serviceResponse = TranslationService.prepResponseHandler().handleResponse(response);
 
-        Assert.assertEquals(new String(data), serviceResponse);
-
+        Assert.assertEquals(new String(data, "UTF-8"), serviceResponse);
     }
 
     @Test
@@ -129,7 +129,7 @@ public class TranslationServiceTest {
         HttpResponse response = mock(HttpResponse.class);
         when(response.getStatusLine()).thenReturn(statusLine);
         when(response.getEntity()).thenReturn(entity);
-        String serviceResponse =  TranslationService.prepResponseHandler().handleResponse(response);
+        String serviceResponse = TranslationService.prepResponseHandler().handleResponse(response);
         Assert.assertNull(serviceResponse);
     }
 
@@ -202,18 +202,8 @@ public class TranslationServiceTest {
 
     private String getParsedTranslation() {
         return "Estoy bastante entusiasmado con mi primer desafío en Top Coder, incluso si es " +
-                "solo un ejercicio de entrenamiento. No estoy completamente seguro de por qué nunca he hecho esto en el pasado. Demasiado divertido trabajando en mis propios proyectos, supongo.";
-    }
-
-    private ResponseHandler<String> getResponseHandler() {
-        return response -> {
-            int status = response.getStatusLine().getStatusCode();
-            if (status >= 200) {
-                HttpEntity entity = response.getEntity();
-                return entity != null ? EntityUtils.toString(entity) : null;
-            } else {
-                throw new ClientProtocolException("Unexpected response status: " + status);
-            }
-        };
+                "solo un ejercicio de entrenamiento. No estoy completamente seguro de por qué " +
+                "nunca he hecho esto en el pasado. Demasiado divertido trabajando en mis propios " +
+                "proyectos, supongo.";
     }
 }

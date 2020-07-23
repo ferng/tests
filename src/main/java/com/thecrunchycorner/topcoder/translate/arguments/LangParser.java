@@ -1,14 +1,14 @@
-package com.thecrunchycorner.topcoder_translate.arguments;
+package com.thecrunchycorner.topcoder.translate.arguments;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class LangParser {
-    private static ArrayList<String> languages = new ArrayList<>();
+    private static final ArrayList<String> languages = new ArrayList<>();
 
     static {
         //in a production system this would be in a database somewhere
-        for (Languages existingLanguage: Languages.values()) {
+        for (Languages existingLanguage : Languages.values()) {
             languages.addAll(Arrays.asList(existingLanguage.getLanguageAliases()));
         }
     }

@@ -1,13 +1,16 @@
-package com.thecrunchycorner.topcoder_translate;
+package com.thecrunchycorner.topcoder.translate;
 
-import com.thecrunchycorner.topcoder_translate.arguments.LangParser;
-import com.thecrunchycorner.topcoder_translate.arguments.OptParser;
-import com.thecrunchycorner.topcoder_translate.arguments.ParserResult;
-import com.thecrunchycorner.topcoder_translate.file_processor.InputFile;
-import com.thecrunchycorner.topcoder_translate.file_processor.OutputFile;
-import com.thecrunchycorner.topcoder_translate.services.TranslationService;
-import java.io.FileReader;
-import java.io.FileWriter;
+import com.thecrunchycorner.topcoder.translate.arguments.LangParser;
+import com.thecrunchycorner.topcoder.translate.arguments.OptParser;
+import com.thecrunchycorner.topcoder.translate.arguments.ParserResult;
+import com.thecrunchycorner.topcoder.translate.file.processor.InputFile;
+import com.thecrunchycorner.topcoder.translate.file.processor.OutputFile;
+import com.thecrunchycorner.topcoder.translate.services.TranslationService;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import picocli.CommandLine;
 
 public class App {
@@ -21,13 +24,11 @@ public class App {
     private static final boolean FAILURE = false;
     private static final ParserResult SUCCESS_RESULT = new ParserResult(SUCCESS, "");
     private static ParserResult result = SUCCESS_RESULT;
-    private static final int EXIT_CODE_SUCCESS = 0;
-    private static final int EXIT_CODE_FAILURE = 1;
 
     // In production these would be in a config file or db somewhere
     private static final String LANGUAGE_HELP =
             "Available languages: " + LangParser.getLanguages().toString() + "\n";
-    private static final String ENDPOINT = "https://translate.goxogle.com/translate_a/single?";
+    private static final String ENDPOINT = "https://translate.google.com/translate_a/single?";
 
 
     public static void main(String[] args) {
@@ -46,18 +47,25 @@ public class App {
         } else {
             parseLanguageOptions();
             try {
-                String sourceText =
-                        InputFile.getSourceText(new FileReader(OPT_PARSER.getInput()));
+                InputStreamReader reader =
+                        new InputStreamReader(new FileInputStream(OPT_PARSER.getInput()),
+                                StandardCharsets.UTF_8);
+                String sourceText = InputFile.getSourceText(reader);
+                reader.close();
                 String targetText = TranslationService.translate(ENDPOINT, sourceText,
                         OPT_PARSER.getSource(), OPT_PARSER.getTarget());
-                OutputFile.writeTargetText(new FileWriter(OPT_PARSER.getOutput()),
-                        targetText);
+                OutputStreamWriter writer =
+                        new OutputStreamWriter(new FileOutputStream(OPT_PARSER.getOutput()),
+                                StandardCharsets.UTF_8);
+                OutputFile.writeTargetText(writer, targetText);
+                writer.close();
                 System.out.println("Translation process complete");
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
         }
     }
+
     private static void parseLanguageOptions() {
         result = validateOptions();
 
@@ -83,7 +91,7 @@ public class App {
             if (CMD.getUnmatchedArguments().size() > 1) {
                 parameterLabel = "parameters";
             }
-            String errorMsg = String.format("Unknown %1s: %2s\n", parameterLabel,
+            String errorMsg = String.format("Unknown %1s: %2s%n", parameterLabel,
                     CMD.getUnmatchedArguments());
             return new ParserResult(FAILURE, errorMsg);
         }
@@ -92,7 +100,7 @@ public class App {
 
     private static ParserResult validateSourceLanguage() {
         if (!LangParser.isValidLanguage(OPT_PARSER.getSource())) {
-            String errorMsg = String.format("Unknown source language[%1s ]\n%2s",
+            String errorMsg = String.format("Unknown source language[%1s ]%n%2s",
                     OPT_PARSER.getSource(), LANGUAGE_HELP);
             return new ParserResult(FAILURE, errorMsg);
         }
@@ -101,7 +109,7 @@ public class App {
 
     private static ParserResult validateTargetLanguage() {
         if (!LangParser.isValidLanguage(OPT_PARSER.getTarget())) {
-            String errorMsg = String.format("Unknown target language[%1s ]\n%2s",
+            String errorMsg = String.format("Unknown target language[%1s ]%n%2s",
                     OPT_PARSER.getTarget(), LANGUAGE_HELP);
             return new ParserResult(FAILURE, errorMsg);
         }

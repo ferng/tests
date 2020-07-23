@@ -1,4 +1,4 @@
-package com.thecrunchycorner.topcoder_translate.file_processor;
+package com.thecrunchycorner.topcoder.translate.file.processor;
 
 import java.io.BufferedReader;
 import java.io.Reader;
@@ -12,10 +12,8 @@ public class InputFile {
 
         Stream<String> text = reader.lines();
 
-        String response = text
+        return text
                 .map(Objects::toString)
                 .collect(Collectors.joining());
-
-        return response;
     }
 }

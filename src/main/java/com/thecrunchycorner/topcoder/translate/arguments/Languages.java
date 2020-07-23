@@ -1,4 +1,4 @@
-package com.thecrunchycorner.topcoder_translate.arguments;
+package com.thecrunchycorner.topcoder.translate.arguments;
 
 public enum Languages {
     ENGLISH("en", new String[] {"en", "english"}),
@@ -6,8 +6,8 @@ public enum Languages {
     JAPANESE("ja", new String[] {"ja", "japanese"}),
     SPANISH("es", new String[] {"es", "spanish"});
 
-    private String languageCode;
-    private String[] languageAliases;
+    private final String languageCode;
+    private final String[] languageAliases;
 
     Languages(String languageCode, String[] languageAliases) {
         this.languageCode = languageCode;
@@ -19,6 +19,9 @@ public enum Languages {
     }
 
     public String[] getLanguageAliases() {
-        return languageAliases;
+        String[] copy = new String[languageAliases.length];
+        System.arraycopy(languageAliases, 0, copy, 0, languageAliases.length);
+
+        return copy;
     }
 }

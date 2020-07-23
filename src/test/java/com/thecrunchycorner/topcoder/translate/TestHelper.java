@@ -1,4 +1,4 @@
-package com.thecrunchycorner.topcoder_translate;
+package com.thecrunchycorner.topcoder.translate;
 
 public class TestHelper {
     static String getMsg() {

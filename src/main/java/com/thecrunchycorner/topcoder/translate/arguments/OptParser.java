@@ -1,4 +1,4 @@
-package com.thecrunchycorner.topcoder_translate.arguments;
+package com.thecrunchycorner.topcoder.translate.arguments;
 
 import java.io.File;
 import picocli.CommandLine.Command;
@@ -16,14 +16,14 @@ public class OptParser {
     @Option(names = {"-t", "--target"}, description = "target language")
     private String target = "es";
 
-    @Option(names = { "-i", "--input" }, description = "file with text to be translated")
+    @Option(names = {"-i", "--input"}, description = "file with text to be translated")
     private File input = new File("source.txt");
 
-    @Option(names = { "-o", "--output" }, description = "file to save translated text to")
+    @Option(names = {"-o", "--output"}, description = "file to save translated text to")
     private File output = new File("target.txt");
 
-    @Option(names = { "-l", "--languages" }, description = "list available languages")
-    private boolean isLanguageHelpRequested = false;
+    @Option(names = {"-l", "--languages"}, description = "list available languages")
+    private boolean languageHelpRequested = false;
 
     public String getSource() {
         return source;
@@ -42,6 +42,6 @@ public class OptParser {
     }
 
     public boolean isLanguageHelpRequested() {
-        return isLanguageHelpRequested;
+        return languageHelpRequested;
     }
 }

@@ -1,4 +1,4 @@
-package com.thecrunchycorner.topcoder_translate.arguments;
+package com.thecrunchycorner.topcoder.translate.arguments;
 
 import java.util.ArrayList;
 import org.junit.Assert;

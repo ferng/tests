@@ -1,4 +1,4 @@
-package com.thecrunchycorner.topcoder_translate.services.response;
+package com.thecrunchycorner.topcoder.translate.services.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

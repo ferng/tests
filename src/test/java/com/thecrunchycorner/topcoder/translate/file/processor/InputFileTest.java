@@ -1,15 +1,10 @@
-package com.thecrunchycorner.topcoder_translate.file_processor;
+package com.thecrunchycorner.topcoder.translate.file.processor;
 
 import java.io.StringReader;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class InputFileTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
 
     @Test
     public void shouldReturnFormattedTextReadFromFile() {
