@@ -20,7 +20,7 @@ SSN is assumed to follow the US SSN format (the UK uses NI number).
  
 * The requirements state that "b. If service returns score greater than 700 then: i. Calculate
  the Sanctioned loan amount as Annual income/2 as the sanctioned amount". As no other conditions
- are stated I have assumed that if the score is less than or equal to 700 the application will be
+ are given I have assumed that if the score is less than or equal to 700 the application will be
  rejected, however this behaviour can be changed by updating CLASS.METHOD-------
 
 * Without a backing database we cannot determine whether the same applicant has applied in the last
@@ -29,9 +29,15 @@ SSN is assumed to follow the US SSN format (the UK uses NI number).
  logic is still in place and only ```Applicant.isRecentApplicant``` would have to be changed to
  introduce checks against a database.
  
- * The decision-making engine is also mocked. In this case different behaviour can be triggered
-  by changing the last digit of the SSN.
+ * The decision-making engine is also mocked using a similar mechanism. It is accessed via
+  validation.ApprovalEngine. In this case different behaviour can be triggered by changing the last digit of the SSN:
 
+| last digit in SSN | returned value |
+| ----------- | ----------- |
+| 0 | 0 |
+| 1 | 699 |
+| 2 | returns 700 |
+| 3 | returns 701 |
 
 ## Usage
 * startup the service:
