@@ -2,7 +2,6 @@ package com.thecrunchycorner.loanapproval.decision;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.thecrunchycorner.loanapproval.decision.Status;
 import org.junit.jupiter.api.Test;
 
 public class StatusPojoTest {

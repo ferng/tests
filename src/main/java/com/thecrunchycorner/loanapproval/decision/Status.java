@@ -4,8 +4,7 @@ public enum Status {
     RECEIVED("Application received"),
     IN_PROCESS("Application currently in process"),
     REJECTED("Application rejected"),
-    APPROVED("Application approved")
-    ;
+    APPROVED("Application approved");
 
     private final String description;
 
