@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import com.thecrunchycorner.models.Product;
 import com.thecrunchycorner.models.Size;
 import java.io.FileReader;
 import java.io.IOException;

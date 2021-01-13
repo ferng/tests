@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonPropertyOrder( {"id", "sequence"} )
+@JsonPropertyOrder( {"id", "sequence"})
 public class Product implements Serializable, Comparable<Product> {
 
     @JsonProperty("id")
@@ -33,6 +33,6 @@ public class Product implements Serializable, Comparable<Product> {
 
     @Override
     public int compareTo(Product employee) {
-        return (int)(this.sequence - employee.getSequence());
+        return (this.sequence - employee.getSequence());
     }
 }

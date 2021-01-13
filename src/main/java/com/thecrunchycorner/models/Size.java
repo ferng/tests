@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonPropertyOrder( {"id", "productId", "backSoon", "special"} )
+@JsonPropertyOrder( {"id", "productId", "backSoon", "special"})
 public class Size {
 
     @JsonProperty("id")
