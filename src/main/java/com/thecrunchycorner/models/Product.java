@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonPropertyOrder( {"id", "sequence"} )
-public class Product implements Serializable {
+public class Product implements Serializable, Comparable<Product> {
 
     @JsonProperty("id")
     private int id;
@@ -25,5 +25,14 @@ public class Product implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public int getSequence() {
+        return sequence;
+    }
+
+    @Override
+    public int compareTo(Product employee) {
+        return (int)(this.sequence - employee.getSequence());
     }
 }
