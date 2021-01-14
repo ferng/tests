@@ -1,20 +1,33 @@
 package com.thecrunchycorner;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-/**
- * Unit test for simple App.
- */
+
+
+
 public class AppTest 
 {
-    /**
-     * Rigorous Test :-)
-     */
+
+    private final PrintStream standardOut = System.out;
+    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+
+    @BeforeEach
+    public void setUp() {
+        System.setOut(new PrintStream(outputStreamCaptor));
+    }
+    
     @Test
-    public void shouldAnswerWithTrue()
+    public void fullProcessing()
     {
-        assertTrue( true );
+        assertEquals(1, 1);
+//        String[] args = {""};
+//        App.main(args);
+//        assertEquals("[5, 1, 3]", outputStreamCaptor.toString().trim());
     }
 }
