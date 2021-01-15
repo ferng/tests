@@ -1,5 +1,6 @@
 package com.thecrunchycorner;
 
+
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.thecrunchycorner.backend.ProductParser;
 import com.thecrunchycorner.backend.SizeParser;
@@ -34,7 +35,7 @@ public class App {
             MappingIterator<Stock> stockMi =
                     stockCsvReader.readCsv(new FileReader(sourceDirName + "/stock.csv"),
                             Stock.class);
-            HashMap<Integer, Integer> stocks = StockParser.parseData(stockMi);
+            List<Stock> stocks = StockParser.parseData(stockMi);
 
 
             Filter filter = new Filter();

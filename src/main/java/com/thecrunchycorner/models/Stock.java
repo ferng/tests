@@ -17,6 +17,11 @@ public class Stock {
     public Stock() {
     }
 
+    public Stock(int sizeId, int quantity) {
+        this.sizeId = sizeId;
+        this.quantity = quantity;
+    }
+
     public int getSizeId() {
         return sizeId;
     }

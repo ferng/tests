@@ -3,6 +3,7 @@ package com.thecrunchycorner.backend;
 import static com.thecrunchycorner.testHelpers.Data.badProductCsv;
 import static com.thecrunchycorner.testHelpers.Data.stockCsv;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.RuntimeJsonMappingException;
@@ -35,12 +36,20 @@ public class StockParserTest {
 
         rawReader = new StringReader(stockCsv);
         stockMi = csvReader.readCsv(rawReader, Stock.class);
-        HashMap<Integer, Integer> actualData = StockParser.parseData(stockMi);
+        List<Stock> actualData = StockParser.parseData(stockMi);
+
 
         assertEquals(expectedData.size(), actualData.size());
-        expectedData.forEach((stock -> {
-            int id = stock.getSizeId();
-            assertEquals(stock.getQuantity(), actualData.get(id));
+        expectedData.forEach((expected -> {
+            boolean foundMatch = false;
+            for (Stock actual : actualData) {
+                if (expected.getSizeId() == actual.getSizeId()) {
+                    foundMatch = true;
+                    assertEquals(expected.getQuantity(), actual.getQuantity());
+                    break;
+                }
+            }
+            assertTrue(foundMatch);
         }));
     }
 

@@ -23,6 +23,13 @@ public class Size {
     public Size() {
     }
 
+    public Size(int id, int productId, boolean backSoon, boolean special) {
+        this.id = id;
+        this.productId = productId;
+        this.backSoon = backSoon;
+        this.special = special;
+    }
+
     public int getId() {
         return id;
     }

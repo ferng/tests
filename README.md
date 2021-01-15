@@ -4,7 +4,6 @@
 Oh dear Spanish hindered me :-) I misread a crucial mutually exclusive bit of logic around the 
 "specials".
 
-
 # Process
 I spent way too long playing with getting the data read from the CSV files.
 
@@ -21,6 +20,5 @@ I spent way too long playing with getting the data read from the CSV files.
   wanted to break up the rules into individual logical chunks.
 
 # Things I would have changed
-* Unit tests - no time within the constraints. 
 * More time to refactor things, logic is split across Filter and RuleProcessor in a way that is 
   ugly.
