@@ -21,15 +21,8 @@ public class Stock {
         return sizeId;
     }
 
-    public void setSizeId(int sizeId) {
-        this.sizeId = sizeId;
-    }
-
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 }
