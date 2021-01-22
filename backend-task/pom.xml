@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <jackson.version>2.9.10</jackson.version>
-        <log4j.version>2.13.0</log4j.version>
+        <log4j.version>2.13.3</log4j.version>
 
         <spock.version>1.3-groovy-2.5</spock.version>
         <spoock-cglib-nodep.version>3.2.12</spoock-cglib-nodep.version>
