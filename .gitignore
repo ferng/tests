@@ -37,3 +37,5 @@ output
 testoutput
 testoutput2
 Netrw*
+!**/src/main/**/build/
+!**/src/test/**/build/
