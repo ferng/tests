@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <picocli.version>4.3.2</picocli.version>
-        <http.version>4.5.12</http.version>
+        <http.version>4.5.13</http.version>
         <jackson.version>2.9.10</jackson.version>
 
         <maven-compiler.version>3.8.0</maven-compiler.version>
